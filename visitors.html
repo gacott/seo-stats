@@ -11,229 +11,193 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6; color: #333; background: #f8fafc; padding: 2rem 1rem;
         }
-        .container { max-width: 1000px; margin: 0 auto; }
-        header { text-align: center; margin-bottom: 3rem; }
+        .container { max-width: 1050px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 2rem; }
         h1 { font-size: 2.5rem; margin-bottom: 0.5rem; color: #0f172a; }
-        .subtitle { color: #64748b; font-size: 1.1rem; }
+        .subtitle { color: #64748b; font-size: 1.05rem; }
+        .controls { text-align: center; margin-bottom: 2rem; }
+        .controls select {
+            padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid #cbd5e1;
+            font-size: 0.95rem; background: white; cursor: pointer;
+        }
         .stats-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem; margin-bottom: 3rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.25rem; margin-bottom: 2rem;
         }
         .stat-card {
-            background: white; border-radius: 12px; padding: 2rem; text-align: center;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 1px solid #e2e8f0;
+            background: white; border-radius: 12px; padding: 1.5rem; text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;
         }
-        .stat-number { font-size: 3rem; font-weight: 800; color: #2563eb; margin-bottom: 0.5rem; }
-        .stat-label { color: #64748b; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .stat-number { font-size: 2.75rem; font-weight: 800; color: #2563eb; line-height: 1.1; }
+        .stat-number.bot { color: #dc2626; }
+        .stat-number.human { color: #059669; }
+        .stat-label { color: #64748b; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.25rem; }
         .section {
-            background: white; border-radius: 12px; padding: 2rem; margin-bottom: 2rem;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 1px solid #e2e8f0;
+            background: white; border-radius: 12px; padding: 1.75rem; margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;
         }
-        .section h2 { font-size: 1.5rem; margin-bottom: 1.5rem; color: #0f172a; }
-        .visitor-item {
+        .section h2 { font-size: 1.25rem; margin-bottom: 1rem; color: #0f172a; }
+        .row {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 0.9rem 0; border-bottom: 1px solid #f1f5f9;
+            padding: 0.7rem 0; border-bottom: 1px solid #f1f5f9; font-size: 0.92rem;
         }
-        .visitor-item:last-child { border-bottom: none; }
-        .visitor-info { display: flex; align-items: center; gap: 1rem; }
-        .visitor-icon {
-            width: 40px; height: 40px; border-radius: 50%; display: flex;
-            align-items: center; justify-content: center; font-size: 1.25rem;
-        }
-        .bot-icon { background: #dbeafe; }
-        .human-icon { background: #d1fae5; }
-        .neutral-icon { background: #fef3c7; }
-        .visitor-name { font-weight: 600; color: #0f172a; }
-        .visitor-type { font-size: 0.85rem; color: #64748b; }
-        .visitor-time { color: #0f172a; font-weight: 700; font-size: 1rem; }
-        .loading { text-align: center; padding: 2rem; color: #64748b; }
+        .row:last-child { border-bottom: none; }
+        .row .name { font-weight: 600; color: #0f172a; display: flex; align-items: center; gap: 0.5rem; }
+        .row .count { font-weight: 700; color: #0f172a; }
+        .pill { font-size: 0.7rem; padding: 0.1rem 0.45rem; border-radius: 999px; font-weight: 600; }
+        .pill.bot { background: #fee2e2; color: #991b1b; }
+        .pill.human { background: #d1fae5; color: #065f46; }
+        .muted { color: #94a3b8; font-size: 0.8rem; }
+        .recent-ua { max-width: 380px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #64748b; font-size: 0.8rem; }
+        .loading { text-align: center; padding: 1.5rem; color: #64748b; }
         .note {
             background: #fffbeb; border: 1px solid #fde68a; color: #92400e;
-            border-radius: 8px; padding: 1rem; font-size: 0.85rem; margin-bottom: 2rem;
+            border-radius: 8px; padding: 0.9rem 1rem; font-size: 0.83rem; margin-bottom: 1.5rem;
         }
-        footer { text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e2e8f0; color: #64748b; }
+        .bar { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; margin-top: 0.25rem; }
+        .bar > span { display: block; height: 100%; background: #2563eb; }
+        footer { text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9rem; }
         a { color: #2563eb; text-decoration: none; }
         a:hover { text-decoration: underline; }
-        .warn { color: #b45309; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🤖 Visitor Statistics</h1>
-            <p class="subtitle">Live, real counts of bots and humans visiting SEO Stats 2026</p>
+            <h1>🤖 Live Visitor &amp; Bot Stats</h1>
+            <p class="subtitle">Real server-side counts from the tracking Worker — captured from the User-Agent, so crawlers are included.</p>
         </header>
 
         <div class="note">
-            These are <strong>real counters</strong> (Abacus), updated on every visit. Counts come from clients that run JavaScript or load the no-script pixel. Traditional crawlers like Googlebot and Bingbot do not execute JavaScript, so they are only counted if they fetch the tracking pixel — treat those numbers as a <strong>floor</strong>, not a ceiling.
+            These numbers come from a Cloudflare Worker pixel that reads the <strong>User-Agent server-side</strong>. Unlike JavaScript analytics, it sees crawlers like Googlebot, GPTBot, ClaudeBot and PerplexityBot — provided they fetch the pixel image while reading the page.
+        </div>
+
+        <div class="controls">
+            <label for="days" class="muted">Window:&nbsp;</label>
+            <select id="days">
+                <option value="1">Last 24 hours</option>
+                <option value="7" selected>Last 7 days</option>
+                <option value="30">Last 30 days</option>
+                <option value="90">Last 90 days</option>
+            </select>
         </div>
 
         <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number" id="total-visits">—</div>
-                <div class="stat-label">Total Pageviews</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="bot-visits">—</div>
-                <div class="stat-label">Bot Visits</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="human-visits">—</div>
-                <div class="stat-label">Human Visits</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="noscript-visits">—</div>
-                <div class="stat-label">No-JS Hits</div>
-            </div>
+            <div class="stat-card"><div class="stat-number" id="total">—</div><div class="stat-label">Total Hits</div></div>
+            <div class="stat-card"><div class="stat-number human" id="human">—</div><div class="stat-label">Human</div></div>
+            <div class="stat-card"><div class="stat-number bot" id="bot">—</div><div class="stat-label">Bots</div></div>
+            <div class="stat-card"><div class="stat-number" id="ratio">—</div><div class="stat-label">Bot Share</div></div>
         </div>
 
         <div class="section">
-            <h2>Bot Breakdown (real counts)</h2>
-            <div id="bot-breakdown">
-                <div class="loading">Loading bot data...</div>
-            </div>
+            <h2>Hits by Bot</h2>
+            <div id="byBot"><div class="loading">Loading…</div></div>
         </div>
 
         <div class="section">
-            <h2>Page Breakdown</h2>
-            <div id="page-breakdown">
-                <div class="loading">Loading page data...</div>
-            </div>
+            <h2>Hits by Page</h2>
+            <div id="byPage"><div class="loading">Loading…</div></div>
+        </div>
+
+        <div class="section">
+            <h2>Recent Hits</h2>
+            <div id="recent"><div class="loading">Loading…</div></div>
         </div>
     </div>
 
     <footer>
-        <p>Powered by Abacus + Trackto.me | <a href="index.html">Back to SEO Stats</a></p>
+        <p>Powered by Cloudflare Workers + D1 &middot; <a href="index.html">Back to SEO Stats</a></p>
     </footer>
 
+    <img src="https://seo-bot-tracker.gacott-seo.workers.dev/p?page=visitors" width="1" height="1" alt="" style="position:absolute;left:-9999px" />
+
     <script>
-        (function() {
-            const NS = 'seo-stats-gacott';
-            const ua = (navigator.userAgent || '').toLowerCase();
-            const families = [
-                ['googlebot', /googlebot|google-inspectiontool|google-extended/],
-                ['bingbot', /bingbot|msnbot/],
-                ['chatgpt', /gptbot|chatgpt-user|oai-searchbot|openai/],
-                ['claude', /claudebot|claude-web|anthropic/],
-                ['perplexity', /perplexitybot|perplexity-user/],
-                ['ahrefs', /ahrefsbot/],
-                ['semrush', /semrushbot/],
-                ['screamingfrog', /screaming frog/],
-                ['bytespider', /bytespider/],
-                ['apple', /applebot/],
-                ['meta', /facebookexternalhit|meta-externalagent|meta-externalfetcher/],
-                ['duckduck', /duckduckbot/],
-                ['ccbot', /ccbot/]
-            ];
-            let family = null;
-            for (const [name, re] of families) { if (re.test(ua)) { family = name; break; } }
-            const isBot = family !== null || /bot|crawl|spider|slurp|headless|phantom|puppeteer|playwright|curl|wget|python|http/.test(ua);
-            const page = document.documentElement.getAttribute('data-page') || 'visitors';
+        const WORKER = "https://seo-bot-tracker.gacott-seo.workers.dev";
 
-            const hit = (key) => fetch('https://abacus.jasoncameron.dev/hit/' + NS + '/' + key).catch(() => {});
-            const get = async (key) => {
-                try {
-                    const r = await fetch('https://abacus.jasoncameron.dev/get/' + NS + '/' + key);
-                    if (r.status === 404) return 0;
-                    const j = await r.json();
-                    return typeof j.value === 'number' ? j.value : 0;
-                } catch (e) { return 0; }
-            };
+        function fmt(n) { return (n || 0).toLocaleString(); }
+        function esc(s) {
+            return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+        function ago(ms) {
+            const d = Date.now() - ms;
+            const m = Math.floor(d / 60000);
+            if (m < 1) return "just now";
+            if (m < 60) return m + "m ago";
+            const h = Math.floor(m / 60);
+            if (h < 24) return h + "h ago";
+            return Math.floor(h / 24) + "d ago";
+        }
+        const BOT_LABELS = {
+            googlebot: "Googlebot", bingbot: "Bingbot", chatgpt: "ChatGPT / OpenAI",
+            claude: "Claude / Anthropic", perplexity: "Perplexity", ahrefs: "AhrefsBot",
+            semrush: "SemrushBot", screamingfrog: "Screaming Frog", bytespider: "Bytespider",
+            apple: "Applebot", meta: "Meta / Facebook", duckduck: "DuckDuckBot",
+            ccbot: "CCBot", yandex: "YandexBot", baidu: "Baiduspider", other: "Other bots",
+            human: "Human"
+        };
 
-            // Record this visit
-            hit(page + '-total');
-            hit(isBot ? 'bot' : 'human');
-            if (family) hit('bot-' + family);
-            else if (isBot) hit('bot-other');
+        async function load() {
+            const days = document.getElementById("days").value;
+            try {
+                const res = await fetch(WORKER + "/stats?days=" + days, { cache: "no-store" });
+                const data = await res.json();
+                if (!data.ok) throw new Error("API error");
 
-            const FAMILY_LABELS = {
-                googlebot: 'Googlebot',
-                bingbot: 'Bingbot',
-                chatgpt: 'ChatGPT / OpenAI',
-                claude: 'Claude / Anthropic',
-                perplexity: 'Perplexity',
-                ahrefs: 'AhrefsBot',
-                semrush: 'SemrushBot',
-                screamingfrog: 'Screaming Frog',
-                bytespider: 'Bytespider (TikTok)',
-                apple: 'Applebot',
-                meta: 'Meta / Facebook',
-                duckduck: 'DuckDuckBot',
-                ccbot: 'CCBot (Common Crawl)',
-                other: 'Other bots'
-            };
+                const { human, bot, all } = data.totals;
+                document.getElementById("total").textContent = fmt(all);
+                document.getElementById("human").textContent = fmt(human);
+                document.getElementById("bot").textContent = fmt(bot);
+                document.getElementById("ratio").textContent = all ? Math.round((bot / all) * 100) + "%" : "—";
 
-            async function render() {
-                // Read all counters in parallel
-                const keys = ['main-total', 'visitors-total', 'human', 'bot', 'main-noscript', 'visitors-noscript',
-                    ...Object.keys(FAMILY_LABELS).map(f => 'bot-' + f)];
-                const values = await Promise.all(keys.map(get));
-                const map = {};
-                keys.forEach((k, i) => map[k] = values[i]);
-
-                const total = map['main-total'] + map['visitors-total'];
-                const noscript = map['main-noscript'] + map['visitors-noscript'];
-
-                document.getElementById('total-visits').textContent = total;
-                document.getElementById('bot-visits').textContent = map['bot'];
-                document.getElementById('human-visits').textContent = map['human'];
-                document.getElementById('noscript-visits').textContent = noscript;
-
-                // Bot breakdown — only families with count > 0
-                const rows = Object.entries(FAMILY_LABELS)
-                    .map(([key, label]) => ({ label, count: map['bot-' + key] || 0 }))
-                    .filter(r => r.count > 0)
-                    .sort((a, b) => b.count - a.count);
-
-                const bd = document.getElementById('bot-breakdown');
-                if (rows.length === 0) {
-                    bd.innerHTML = '<p class="loading">No bot visits recorded yet. Check back after crawlers visit.</p>';
-                } else {
-                    bd.innerHTML = rows.map(r => `
-                        <div class="visitor-item">
-                            <div class="visitor-info">
-                                <div class="visitor-icon bot-icon">🤖</div>
-                                <div>
-                                    <div class="visitor-name">${r.label}</div>
-                                    <div class="visitor-type">Bot</div>
-                                </div>
+                // By bot
+                const byBot = data.by_bot || [];
+                const maxBot = Math.max(1, ...byBot.map(r => r.n));
+                document.getElementById("byBot").innerHTML = byBot.length
+                    ? byBot.map(r => {
+                        const isHuman = r.bot_name === "human";
+                        const label = BOT_LABELS[r.bot_name] || r.bot_name;
+                        return `<div class="row">
+                            <div class="name">${isHuman ? "👤" : "🤖"} ${esc(label)}
+                              <span class="pill ${isHuman ? "human" : "bot"}">${isHuman ? "human" : "bot"}</span></div>
+                            <div style="text-align:right;min-width:120px">
+                              <span class="count">${fmt(r.n)}</span>
+                              <div class="bar"><span style="width:${Math.round(r.n/maxBot*100)}%"></span></div>
                             </div>
-                            <div class="visitor-time">${r.count}</div>
-                        </div>
-                    `).join('');
-                }
+                        </div>`;
+                    }).join("")
+                    : '<div class="loading">No hits yet in this window.</div>';
 
-                // Page breakdown
-                const pd = document.getElementById('page-breakdown');
-                pd.innerHTML = `
-                    <div class="visitor-item">
-                        <div class="visitor-info">
-                            <div class="visitor-icon neutral-icon">📄</div>
-                            <div><div class="visitor-name">Main page (/seo-stats/)</div><div class="visitor-type">JS pageviews</div></div>
-                        </div>
-                        <div class="visitor-time">${map['main-total']}</div>
-                    </div>
-                    <div class="visitor-item">
-                        <div class="visitor-info">
-                            <div class="visitor-icon neutral-icon">📊</div>
-                            <div><div class="visitor-name">Visitors page</div><div class="visitor-type">JS pageviews</div></div>
-                        </div>
-                        <div class="visitor-time">${map['visitors-total']}</div>
-                    </div>
-                    <div class="visitor-item">
-                        <div class="visitor-info">
-                            <div class="visitor-icon neutral-icon">🖼️</div>
-                            <div><div class="visitor-name">No-JS pixel hits</div><div class="visitor-type">Non-JS clients (incl. some crawlers)</div></div>
-                        </div>
-                        <div class="visitor-time">${noscript}</div>
-                    </div>
-                `;
+                // By page
+                const byPage = data.by_page || [];
+                document.getElementById("byPage").innerHTML = byPage.length
+                    ? byPage.map(r => `<div class="row"><div class="name">📄 ${esc(r.page)}</div><div class="count">${fmt(r.n)}</div></div>`).join("")
+                    : '<div class="loading">No page hits yet.</div>';
+
+                // Recent
+                const recent = data.recent || [];
+                document.getElementById("recent").innerHTML = recent.length
+                    ? recent.map(r => {
+                        const isHuman = r.bot_name === "human";
+                        const label = BOT_LABELS[r.bot_name] || r.bot_name;
+                        return `<div class="row">
+                            <div class="name">${isHuman ? "👤" : "🤖"} ${esc(label)}
+                              <span class="pill ${isHuman ? "human" : "bot"}">${isHuman ? "human" : "bot"}</span>
+                              <span class="muted">${esc(r.country || "")}</span></div>
+                            <div style="text-align:right">
+                              <div class="muted">${ago(r.ts)}</div>
+                              <div class="recent-ua">${esc(r.ua || "")}</div>
+                            </div>
+                        </div>`;
+                    }).join("")
+                    : '<div class="loading">No recent hits.</div>';
+            } catch (e) {
+                document.getElementById("byBot").innerHTML = '<div class="loading">Could not load stats: ' + esc(e.message) + '</div>';
             }
+        }
 
-            render();
-            setInterval(render, 30000);
-        })();
+        document.getElementById("days").addEventListener("change", load);
+        load();
+        setInterval(load, 30000);
     </script>
-    <noscript><img src="https://abacus.jasoncameron.dev/hit/seo-stats-gacott/visitors-noscript" alt="" width="1" height="1" style="display:none"></noscript>
 </body>
 </html>

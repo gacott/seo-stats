@@ -1068,36 +1068,8 @@
             }
         }
         
-        // Visitor + bot tracking (Abacus counters)
-        (function() {
-            const NS = 'seo-stats-gacott';
-            const ua = (navigator.userAgent || '').toLowerCase();
-            const families = [
-                ['googlebot', /googlebot|google-inspectiontool|google-extended/],
-                ['bingbot', /bingbot|msnbot/],
-                ['chatgpt', /gptbot|chatgpt-user|oai-searchbot|openai/],
-                ['claude', /claudebot|claude-web|anthropic/],
-                ['perplexity', /perplexitybot|perplexity-user/],
-                ['ahrefs', /ahrefsbot/],
-                ['semrush', /semrushbot/],
-                ['screamingfrog', /screaming frog/],
-                ['bytespider', /bytespider/],
-                ['apple', /applebot/],
-                ['meta', /facebookexternalhit|meta-externalagent|meta-externalfetcher/],
-                ['duckduck', /duckduckbot/],
-                ['ccbot', /ccbot/]
-            ];
-            let family = null;
-            for (const [name, re] of families) { if (re.test(ua)) { family = name; break; } }
-            const isBot = family !== null || /bot|crawl|spider|slurp|headless|phantom|puppeteer|playwright|curl|wget|python|http/.test(ua);
-            const page = document.documentElement.getAttribute('data-page') || 'main';
-            const hit = (key) => fetch('https://abacus.jasoncameron.dev/hit/' + NS + '/' + key).catch(() => {});
-            hit(page + '-total');
-            hit(isBot ? 'bot' : 'human');
-            if (family) hit('bot-' + family);
-            else if (isBot) hit('bot-other');
-        })();
     </script>
-    <noscript><img src="https://abacus.jasoncameron.dev/hit/seo-stats-gacott/main-noscript" alt="" width="1" height="1" style="display:none"></noscript>
+    <!-- Server-side bot/human pixel (Cloudflare Worker logs the User-Agent) -->
+    <img src="https://seo-bot-tracker.gacott-seo.workers.dev/p?page=main" width="1" height="1" alt="" style="position:absolute;left:-9999px" />
 </body>
 </html>
