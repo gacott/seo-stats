@@ -142,12 +142,6 @@
             color: #64748b;
         }
         
-        .error {
-            text-align: center;
-            padding: 2rem;
-            color: #ef4444;
-        }
-        
         footer {
             text-align: center;
             margin-top: 3rem;
@@ -164,24 +158,6 @@
         a:hover {
             text-decoration: underline;
         }
-        
-        .status {
-            text-align: center;
-            padding: 1rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            font-size: 0.9rem;
-        }
-        
-        .status-success {
-            background: #d1fae5;
-            color: #065f46;
-        }
-        
-        .status-error {
-            background: #fee2e2;
-            color: #991b1b;
-        }
     </style>
 </head>
 <body>
@@ -190,10 +166,6 @@
             <h1>🤖 Visitor Statistics</h1>
             <p class="subtitle">Live tracking of bots and humans visiting SEO Stats 2026</p>
         </header>
-        
-        <div id="status" class="status status-success">
-            Tracking active - This page is live!
-        </div>
         
         <div class="stats-grid">
             <div class="stat-card">
@@ -216,22 +188,15 @@
         
         <div class="section">
             <h2>Recent Activity</h2>
-            <div id="visitor-list" class="loading">
-                Loading visitor data...
+            <div id="visitor-list">
+                <div class="loading">Loading visitor data...</div>
             </div>
         </div>
         
         <div class="section">
             <h2>Bot Breakdown</h2>
-            <div id="bot-breakdown" class="loading">
-                Loading bot data...
-            </div>
-        </div>
-        
-        <div class="section">
-            <h2>Current Visit</h2>
-            <div id="current-visit" class="loading">
-                Detecting your visit...
+            <div id="bot-breakdown">
+                <div class="loading">Loading bot data...</div>
             </div>
         </div>
     </div>
@@ -244,146 +209,86 @@
         // Track this visit
         const userAgent = navigator.userAgent.toLowerCase();
         const isBot = /bot|crawl|spider|slurp|bingbot|yandex|baidu|facebook|twitter|google/i.test(userAgent);
-        const visitTime = new Date().toISOString();
         
-        // Show current visit info
-        const currentVisitDiv = document.getElementById('current-visit');
-        currentVisitDiv.innerHTML = `
-            <div class="visitor-item">
-                <div class="visitor-info">
-                    <div class="visitor-icon ${isBot ? 'bot-icon' : 'human-icon'}">
-                        ${isBot ? '🤖' : '👤'}
-                    </div>
-                    <div>
-                        <div class="visitor-name">${isBot ? 'Bot Detected' : 'Human Visitor'}</div>
-                        <div class="visitor-type">User Agent: ${userAgent.substring(0, 50)}...</div>
-                        <div class="visitor-type">Time: ${new Date().toLocaleTimeString()}</div>
-                    </div>
-                </div>
-                <div class="visitor-time">${isBot ? 'Bot' : 'Human'}</div>
-            </div>
-        `;
+        // Get or initialize visits array from localStorage
+        let visits = JSON.parse(localStorage.getItem('seo-stats-visits') || '[]');
         
-        // Send visit data to Pageview.dev
-        fetch('https://api.pageview.dev/count', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                domain: 'gacott.github.io',
-                path: '/seo-stats/visitors.html',
-                timestamp: visitTime,
-                userAgent: userAgent.substring(0, 200),
-                isBot: isBot
-            })
-        }).then(response => {
-            if (response.ok) {
-                console.log('Visit tracked successfully');
-            } else {
-                console.log('Visit tracking failed:', response.status);
-            }
-        }).catch(err => {
-            console.log('Visit tracking error:', err);
+        // Add current visit
+        visits.push({
+            timestamp: new Date().toISOString(),
+            userAgent: userAgent.substring(0, 200),
+            isBot: isBot
         });
         
-        // Fetch visitor data from Pageview.dev
-        async function loadVisitors() {
-            try {
-                const response = await fetch('https://api.pageview.dev/get?domain=gacott.github.io');
-                const data = await response.json();
-                
-                if (data.success && data.data && data.data.visits) {
-                    updateStats(data.data);
-                } else {
-                    console.log('API response:', data);
-                    useFallbackData();
-                }
-            } catch (error) {
-                console.log('API error, using fallback:', error);
-                useFallbackData();
-            }
+        // Keep only last 100 visits
+        if (visits.length > 100) {
+            visits = visits.slice(-100);
         }
         
-        function updateStats(data) {
-            const visits = data.visits || [];
-            const bots = visits.filter(v => v.isBot);
-            const humans = visits.filter(v => !v.isBot);
-            
-            document.getElementById('total-visits').textContent = visits.length;
-            document.getElementById('bot-visits').textContent = bots.length;
-            document.getElementById('human-visits').textContent = humans.length;
-            document.getElementById('last-update').textContent = 'Live';
-            
-            // Render recent activity
-            const visitorList = document.getElementById('visitor-list');
-            if (visits.length === 0) {
-                visitorList.innerHTML = '<p class="loading">No visits recorded yet. Check back soon!</p>';
-            } else {
-                visitorList.innerHTML = visits.slice(0, 20).map(visit => {
-                    const timeAgo = getTimeAgo(visit.timestamp);
-                    const icon = visit.isBot ? '🤖' : '👤';
-                    const iconClass = visit.isBot ? 'bot-icon' : 'human-icon';
-                    const type = visit.isBot ? 'Bot' : 'Human';
-                    
-                    return `
-                        <div class="visitor-item">
-                            <div class="visitor-info">
-                                <div class="visitor-icon ${iconClass}">${icon}</div>
-                                <div>
-                                    <div class="visitor-name">${visit.userAgent || 'Unknown'}</div>
-                                    <div class="visitor-type">${type}</div>
-                                </div>
-                            </div>
-                            <div class="visitor-time">${timeAgo}</div>
-                        </div>
-                    `;
-                }).join('');
-            }
-            
-            // Render bot breakdown
-            const botBreakdown = document.getElementById('bot-breakdown');
-            if (bots.length === 0) {
-                botBreakdown.innerHTML = '<p class="loading">No bot visits recorded yet.</p>';
-            } else {
-                const botNames = {};
-                bots.forEach(bot => {
-                    const name = bot.userAgent || 'Unknown Bot';
-                    botNames[name] = (botNames[name] || 0) + 1;
-                });
+        // Save to localStorage
+        localStorage.setItem('seo-stats-visits', JSON.stringify(visits));
+        
+        // Update stats
+        const bots = visits.filter(v => v.isBot);
+        const humans = visits.filter(v => !v.isBot);
+        
+        document.getElementById('total-visits').textContent = visits.length;
+        document.getElementById('bot-visits').textContent = bots.length;
+        document.getElementById('human-visits').textContent = humans.length;
+        document.getElementById('last-update').textContent = 'Live';
+        
+        // Render recent activity
+        const visitorList = document.getElementById('visitor-list');
+        if (visits.length === 0) {
+            visitorList.innerHTML = '<p class="loading">No visits recorded yet. Check back soon!</p>';
+        } else {
+            visitorList.innerHTML = visits.slice(-20).reverse().map(visit => {
+                const timeAgo = getTimeAgo(visit.timestamp);
+                const icon = visit.isBot ? '🤖' : '👤';
+                const iconClass = visit.isBot ? 'bot-icon' : 'human-icon';
+                const type = visit.isBot ? 'Bot' : 'Human';
                 
-                botBreakdown.innerHTML = Object.entries(botNames)
-                    .sort((a, b) => b[1] - a[1])
-                    .slice(0, 10)
-                    .map(([name, count]) => `
-                        <div class="visitor-item">
-                            <div class="visitor-info">
-                                <div class="visitor-icon bot-icon">🤖</div>
-                                <div>
-                                    <div class="visitor-name">${name}</div>
-                                    <div class="visitor-type">Bot</div>
-                                </div>
+                return `
+                    <div class="visitor-item">
+                        <div class="visitor-info">
+                            <div class="visitor-icon ${iconClass}">${icon}</div>
+                            <div>
+                                <div class="visitor-name">${visit.userAgent || 'Unknown'}</div>
+                                <div class="visitor-type">${type}</div>
                             </div>
-                            <div class="visitor-time">${count} visit${count !== 1 ? 's' : ''}</div>
                         </div>
-                    `).join('');
-            }
+                        <div class="visitor-time">${timeAgo}</div>
+                    </div>
+                `;
+            }).join('');
         }
         
-        function useFallbackData() {
-            // Simulated data for demonstration
-            const fallbackVisits = [
-                { timestamp: new Date(Date.now() - 1000 * 60 * 2).toISOString(), userAgent: 'Googlebot/2.1', isBot: true },
-                { timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString(), userAgent: 'Bingbot/2.0', isBot: true },
-                { timestamp: new Date(Date.now() - 1000 * 60 * 12).toISOString(), userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)', isBot: false },
-                { timestamp: new Date(Date.now() - 1000 * 60 * 18).toISOString(), userAgent: 'Claude-Web/1.0', isBot: true },
-                { timestamp: new Date(Date.now() - 1000 * 60 * 25).toISOString(), userAgent: 'Screaming Frog SEO Spider', isBot: true },
-                { timestamp: new Date(Date.now() - 1000 * 60 * 32).toISOString(), userAgent: 'AhrefsBot/7.0', isBot: true },
-                { timestamp: new Date(Date.now() - 1000 * 60 * 45).toISOString(), userAgent: 'SemrushBot/7.0', isBot: true },
-                { timestamp: new Date(Date.now() - 1000 * 60 * 60).toISOString(), userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X)', isBot: false },
-                { timestamp: new Date(Date.now() - 1000 * 60 * 90).toISOString(), userAgent: 'Baidu Spider/2.0', isBot: true },
-                { timestamp: new Date(Date.now() - 1000 * 60 * 120).toISOString(), userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS)', isBot: false }
-            ];
+        // Render bot breakdown
+        const botBreakdown = document.getElementById('bot-breakdown');
+        if (bots.length === 0) {
+            botBreakdown.innerHTML = '<p class="loading">No bot visits recorded yet.</p>';
+        } else {
+            const botNames = {};
+            bots.forEach(bot => {
+                const name = bot.userAgent || 'Unknown Bot';
+                botNames[name] = (botNames[name] || 0) + 1;
+            });
             
-            updateStats({ visits: fallbackVisits });
+            botBreakdown.innerHTML = Object.entries(botNames)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10)
+                .map(([name, count]) => `
+                    <div class="visitor-item">
+                        <div class="visitor-info">
+                            <div class="visitor-icon bot-icon">🤖</div>
+                            <div>
+                                <div class="visitor-name">${name}</div>
+                                <div class="visitor-type">Bot</div>
+                            </div>
+                        </div>
+                        <div class="visitor-time">${count} visit${count !== 1 ? 's' : ''}</div>
+                    </div>
+                `).join('');
         }
         
         function getTimeAgo(timestamp) {
@@ -397,12 +302,6 @@
             if (diffMins < 1440) return `${Math.floor(diffMins / 60)}h ago`;
             return `${Math.floor(diffMins / 1440)}d ago`;
         }
-        
-        // Load data on page load
-        loadVisitors();
-        
-        // Refresh every 30 seconds
-        setInterval(loadVisitors, 30000);
     </script>
 </body>
 </html>
