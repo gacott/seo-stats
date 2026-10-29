@@ -164,6 +164,24 @@
         a:hover {
             text-decoration: underline;
         }
+        
+        .status {
+            text-align: center;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .status-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
     </style>
 </head>
 <body>
@@ -173,17 +191,21 @@
             <p class="subtitle">Live tracking of bots and humans visiting SEO Stats 2026</p>
         </header>
         
+        <div id="status" class="status status-success">
+            Tracking active - This page is live!
+        </div>
+        
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-number" id="total-visits">--</div>
+                <div class="stat-number" id="total-visits">0</div>
                 <div class="stat-label">Total Visits</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number" id="bot-visits">--</div>
+                <div class="stat-number" id="bot-visits">0</div>
                 <div class="stat-label">Bot Visits</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number" id="human-visits">--</div>
+                <div class="stat-number" id="human-visits">0</div>
                 <div class="stat-label">Human Visits</div>
             </div>
             <div class="stat-card">
@@ -205,6 +227,13 @@
                 Loading bot data...
             </div>
         </div>
+        
+        <div class="section">
+            <h2>Current Visit</h2>
+            <div id="current-visit" class="loading">
+                Detecting your visit...
+            </div>
+        </div>
     </div>
     
     <footer>
@@ -215,19 +244,46 @@
         // Track this visit
         const userAgent = navigator.userAgent.toLowerCase();
         const isBot = /bot|crawl|spider|slurp|bingbot|yandex|baidu|facebook|twitter|google/i.test(userAgent);
+        const visitTime = new Date().toISOString();
+        
+        // Show current visit info
+        const currentVisitDiv = document.getElementById('current-visit');
+        currentVisitDiv.innerHTML = `
+            <div class="visitor-item">
+                <div class="visitor-info">
+                    <div class="visitor-icon ${isBot ? 'bot-icon' : 'human-icon'}">
+                        ${isBot ? '🤖' : '👤'}
+                    </div>
+                    <div>
+                        <div class="visitor-name">${isBot ? 'Bot Detected' : 'Human Visitor'}</div>
+                        <div class="visitor-type">User Agent: ${userAgent.substring(0, 50)}...</div>
+                        <div class="visitor-type">Time: ${new Date().toLocaleTimeString()}</div>
+                    </div>
+                </div>
+                <div class="visitor-time">${isBot ? 'Bot' : 'Human'}</div>
+            </div>
+        `;
         
         // Send visit data to Pageview.dev
         fetch('https://api.pageview.dev/count', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                domain: 'seo-stats.gacott.github.io',
-                path: '/visitors',
-                timestamp: new Date().toISOString(),
+                domain: 'gacott.github.io',
+                path: '/seo-stats/visitors.html',
+                timestamp: visitTime,
                 userAgent: userAgent.substring(0, 200),
                 isBot: isBot
             })
-        }).catch(() => {});
+        }).then(response => {
+            if (response.ok) {
+                console.log('Visit tracked successfully');
+            } else {
+                console.log('Visit tracking failed:', response.status);
+            }
+        }).catch(err => {
+            console.log('Visit tracking error:', err);
+        });
         
         // Fetch visitor data from Pageview.dev
         async function loadVisitors() {
@@ -235,10 +291,10 @@
                 const response = await fetch('https://api.pageview.dev/get?domain=gacott.github.io');
                 const data = await response.json();
                 
-                if (data.success) {
+                if (data.success && data.data && data.data.visits) {
                     updateStats(data.data);
                 } else {
-                    // Use fallback data if API fails
+                    console.log('API response:', data);
                     useFallbackData();
                 }
             } catch (error) {
