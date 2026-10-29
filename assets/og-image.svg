@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="SEO Facts — 2026 Edition">
+  <rect width="1200" height="630" fill="#F1F2F4"/>
+  <rect x="0" y="0" width="1200" height="14" fill="#1F3FD1"/>
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#111315">
+    <text x="80" y="200" font-size="112" font-weight="700" letter-spacing="-3">SEO Facts</text>
+  </g>
+  <rect x="80" y="240" width="90" height="6" fill="#1F3FD1"/>
+  <g font-family="Helvetica, Arial, sans-serif" fill="#2A2F36">
+    <text x="80" y="320" font-size="36">An open reference of 97 search engine</text>
+    <text x="80" y="366" font-size="36">optimisation statistics, each sourced and dated.</text>
+  </g>
+  <g font-family="'Courier New', monospace" fill="#5B6472" font-size="22">
+    <text x="80" y="470">2026 EDITION</text>
+    <text x="80" y="510">97 STATISTICS</text>
+    <text x="80" y="550">6 CATEGORIES</text>
+    <text x="80" y="590">UPDATED 15 JAN 2026</text>
+  </g>
+  <g font-family="Georgia, serif" fill="#1F3FD1">
+    <text x="760" y="300" font-size="150" font-weight="700">67.6%</text>
+  </g>
+  <g font-family="Helvetica, Arial, sans-serif" fill="#5B6472" font-size="26">
+    <text x="764" y="350">of traffic is organic</text>
+  </g>
+  <rect x="760" y="400" width="360" height="2" fill="#D8DCE2"/>
+  <g font-family="'Courier New', monospace" fill="#111315" font-size="22">
+    <text x="764" y="450">gacott.github.io/seo-stats</text>
+  </g>
+</svg>
